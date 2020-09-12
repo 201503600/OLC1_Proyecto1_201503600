@@ -14,9 +14,10 @@ from ResaltarSintaxis import ResaltarSintaxis
 from Numeros import Numeros
 from LexicoJson import AnalizadorLexicoJson
 
+
 class Ui_Ventana(object):
     def setupUi(self, Ventana):
-        self.ruta = "" 
+        self.ruta = ""
 
         Ventana.setObjectName("Ventana")
         Ventana.resize(850, 500)
@@ -39,20 +40,20 @@ class Ui_Ventana(object):
         self.statusbar = QtWidgets.QStatusBar(Ventana)
         self.statusbar.setObjectName("statusbar")
         Ventana.setStatusBar(self.statusbar)
-        
+
         self.editor = Numeros(self.centralwidget)
         self.editor.setGeometry(QtCore.QRect(10, 10, 460, 500))
         self.editor.setObjectName("editor")
         self.editor.setStyleSheet(
-        """QPlainTextEdit {background-color: #31598D;
+            """QPlainTextEdit {background-color: #31598D;
                            color: #000;
                            font-family: Courier;}""")
-        self.resaltado = ResaltarSintaxis(self.editor) 
+        self.resaltado = ResaltarSintaxis(self.editor)
 
         self.consola = QtWidgets.QPlainTextEdit(self.centralwidget)
         self.consola.setGeometry(QtCore.QRect(485, 10, 350, 500))
         self.consola.setStyleSheet(
-        """QPlainTextEdit {background-color: #333;
+            """QPlainTextEdit {background-color: #333;
                            color: #fff;
                            font-family: Courier;}""")
         self.consola.setObjectName("consola")
@@ -60,32 +61,32 @@ class Ui_Ventana(object):
         self.Eventos()
         Ventana.show()
 
-    def addMenuArchivo(self, Ventana) :
-        #Nuevo
+    def addMenuArchivo(self, Ventana):
+        # Nuevo
         self.itemNuevo = QtWidgets.QAction("&Nuevo", Ventana)
         self.itemNuevo.setStatusTip("Crear nuevo archivo")
         self.itemNuevo.setShortcut("Ctrl+N")
 
-        #Abrir
+        # Abrir
         self.itemAbrir = QtWidgets.QAction("&Abrir", Ventana)
         self.itemAbrir.setStatusTip("Abrir archivo")
         self.itemAbrir.setShortcut("Ctrl+O")
 
-        #Guardar
+        # Guardar
         self.itemGuardar = QtWidgets.QAction("&Guardar", Ventana)
         self.itemGuardar.setStatusTip("Guardar cambios")
         self.itemGuardar.setShortcut("Ctrl+S")
 
-        #Guardar como
+        # Guardar como
         self.itemGuardarComo = QtWidgets.QAction("&Guardar como", Ventana)
         self.itemGuardarComo.setStatusTip("Guardar archivo")
         self.itemGuardarComo.setShortcut("Ctrl+G")
 
-        #Salir
+        # Salir
         self.itemSalir = QtWidgets.QAction("&Salir", Ventana)
         self.itemSalir.setStatusTip("Cerrar programa")
-       
-        #Agregar items al menu archivo
+
+        # Agregar items al menu archivo
         self.mArchivo = QtWidgets.QMenu("&Archivo", self.menubar)
         self.mArchivo.addAction(self.itemNuevo)
         self.mArchivo.addAction(self.itemAbrir)
@@ -97,7 +98,7 @@ class Ui_Ventana(object):
         self.menubar.addAction(self.mArchivo.menuAction())
 
     def addMenuAnalisis(self, Ventana):
-        #Analisis Json
+        # Analisis Json
         self.itemAnalisis = QtWidgets.QAction("&Analizar Archivo", Ventana)
         self.itemAnalisis.setStatusTip("Analizar archivo")
 
@@ -107,27 +108,28 @@ class Ui_Ventana(object):
         self.menubar.addAction(self.menuAnalisis.menuAction())
 
     def addMenuReporte(self, Ventana):
-        #Reporte Json
+        # Reporte Json
         self.itemRepJs = QtWidgets.QAction("&Reporte Javascript", Ventana)
         self.itemRepJs.setStatusTip("Reporte Javascript")
 
-        #Reporte CSS
+        # Reporte CSS
         self.itemRepCSS = QtWidgets.QAction("&Reporte CSS", Ventana)
         self.itemRepCSS.setStatusTip("Reporte CSS")
 
-        #Reporte Html
+        # Reporte Html
         self.itemRepHtml = QtWidgets.QAction("&Reporte Html", Ventana)
         self.itemRepHtml.setStatusTip("Reporte Html")
 
-        #Reporte Sintactico
-        self.itemRepSintactico = QtWidgets.QAction("&Reporte Sintactico", Ventana)
+        # Reporte Sintactico
+        self.itemRepSintactico = QtWidgets.QAction(
+            "&Reporte Sintactico", Ventana)
         self.itemRepSintactico.setStatusTip("Reporte Sintactico")
 
-        #Reporte Errores
+        # Reporte Errores
         self.itemRepError = QtWidgets.QAction("&Reporte Errores", Ventana)
         self.itemRepError.setStatusTip("Reporte Errores")
 
-        self.mReporte = QtWidgets.QMenu("&Reporte", self.menubar)        
+        self.mReporte = QtWidgets.QMenu("&Reporte", self.menubar)
         self.mReporte.addAction(self.itemRepJs)
         self.mReporte.addAction(self.itemRepCSS)
         self.mReporte.addAction(self.itemRepHtml)
@@ -138,11 +140,11 @@ class Ui_Ventana(object):
         self.menubar.addAction(self.mReporte.menuAction())
 
     def addMenuAyuda(self, Ventana):
-        #Informacion
+        # Informacion
         self.itemInfor = QtWidgets.QAction("&Informacion", Ventana)
         self.itemInfor.setStatusTip("Informacion")
 
-        #Manuales
+        # Manuales
         self.itemManuales = QtWidgets.QAction("&Manual de usuario", Ventana)
         self.itemManuales.setStatusTip("Manual de usuario")
 
@@ -152,7 +154,7 @@ class Ui_Ventana(object):
 
         self.menubar.addAction(self.mAyuda.menuAction())
 
-    def Eventos(self) :
+    def Eventos(self):
         self.itemNuevo.triggered.connect(self.NuevoArchivo)
         self.itemAbrir.triggered.connect(self.AbrirArchivo)
         self.itemGuardar.triggered.connect(self.GuardarArchivo)
@@ -173,48 +175,49 @@ class Ui_Ventana(object):
         self.ruta = ""
         self.editor.clear()
 
-    def AbrirArchivo(self) :
-        archivo = QtWidgets.QFileDialog.getOpenFileName(None, 'Abrir Archivo', 
-         '/home/daniel/Desktop',"Javascript (*.js);;CSS (*.css);;HTML (*.html);;RMT (*.rmt)")[0]
+    def AbrirArchivo(self):
+        archivo = QtWidgets.QFileDialog.getOpenFileName(None, 'Abrir Archivo',
+                                                        '/home/daniel/Desktop', "Javascript (*.js);;CSS (*.css);;HTML (*.html);;RMT (*.rmt)")[0]
 
-        if archivo != '' :
+        if archivo != '':
             with open(archivo, 'r') as file:
                 self.ruta = archivo
                 self.editor.insertPlainText(file.read())
 
-    def GuardarArchivo(self) :
+    def GuardarArchivo(self):
         if self.ruta == '':
             self.GuardarArchivoComo()
         else:
             with open(self.ruta, 'w') as archivo:
                 archivo.write(editor.toPlainText())
 
-    def GuardarArchivoComo(self) :
-        archivo = QtWidgets.QFileDialog.getOpenFileName(None, 'Abrir Archivo', 
-         '/home/daniel/Desktop',"Javascript (*.js);;CSS (*.css);;HTML (*.html);;RMT (*.rmt)")
+    def GuardarArchivoComo(self):
+        archivo = QtWidgets.QFileDialog.getOpenFileName(None, 'Guardar como ...',
+                                                        '/home/daniel/Desktop', "Javascript (*.js);;CSS (*.css);;HTML (*.html);;RMT (*.rmt)")
 
-        if archivo != '' :
+        if archivo != '':
             with open(archivo, 'w') as file:
                 file.write(editor.toPlainText())
                 self.ruta = archivo
-    
-    def Salir(self) :
+
+    def Salir(self):
         sys.exit(app.exec_())
 
     def Analizar(self):
         if(self.ruta.find('.js') != -1):
-            #Analisis json
-            analisis = AnalizadorLexicoJson(self.editor.toPlainText())
+            # Analisis json
+            analisis = AnalizadorLexicoJson(
+                self.editor.toPlainText(), self.consola)
             analisis.analizarJson()
             pass
         elif(self.ruta.find('.css') != -1):
-            #Analisis css
+            # Analisis css
             pass
         elif(self.ruta.find('.html') != -1):
-            #Analisis html
+            # Analisis html
             pass
         else:
-            #Analisis sintactico
+            # Analisis sintactico
             pass
         pass
 
@@ -237,14 +240,18 @@ class Ui_Ventana(object):
         msg = QtWidgets.QMessageBox()
         msg.setIcon(QtWidgets.QMessageBox.Information)
 
-        msg.setText("USAC\nFacultad de Ingenieria\nEscuela de Ciencias y Sistemas\nOrganizacion de Lenguajes y Compiladores 1\nSeccion A")
-        msg.setInformativeText("Proyecto realizado por: Edgar Daniel Cil Peñate con carnet 201503600\n")
+        msg.setText(
+            "USAC\nFacultad de Ingenieria\nEscuela de Ciencias y Sistemas\nOrganizacion de Lenguajes y Compiladores 1\nSeccion A")
+        msg.setInformativeText(
+            "Proyecto realizado por: Edgar Daniel Cil Peñate con carnet 201503600\n")
         msg.setWindowTitle("Informacion")
         #msg.setDetailedText("The details are as follows:")
 
         msg.exec()
 
+
 if __name__ == "__main__":
+    sys.setrecursionlimit(10000)
     app = QtWidgets.QApplication(sys.argv)
     Ventana = QtWidgets.QMainWindow()
     ui = Ui_Ventana()

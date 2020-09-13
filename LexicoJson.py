@@ -1,15 +1,17 @@
 import sys
+import os
 import Errores
 from graphviz import Digraph
 
 
 class AnalizadorLexicoJson:
-    def __init__(self, entrada, conso):
+    def __init__(self, entrada, conso, name):
         self.entrada = entrada
         self.estado = 0
         self.linea = 0
         self.columna = 0
         self.consola = conso
+        self.nombre = name
         self.ids = {}
     # END
 
@@ -202,8 +204,10 @@ class AnalizadorLexicoJson:
                     Errores.error.append(
                         {"tipo": "lexico", "lexema": cadena, "linea": self.linea, "columna": self.columna})
                     cadena = ""
+                    self.entrada = self.entrada[:indice] + \
+                        "0" + self.entrada[indice:]
                     self.estado = 0
-                    indice -= 1
+                    #indice -= 1
             elif (self.estado == 8):
                 if (ord(self.entrada[indice]) >= 48 and ord(self.entrada[indice]) <= 57):
                     cadena += self.entrada[indice]
@@ -234,8 +238,10 @@ class AnalizadorLexicoJson:
                     Errores.error.append(
                         {"tipo": "lexico", "lexema": cadena, "linea": self.linea, "columna": self.columna})
                     cadena = ""
+                    self.entrada = self.entrada[:indice] + \
+                        "\"" + self.entrada[indice:]
                     self.estado = 0
-                    indice -= 1
+                    #indice -= 1
                 elif (ord(self.entrada[indice]) == 34):
                     self.estado = 0  # Se reconoce cadena con doble comilla
                     cadena = ""
@@ -250,10 +256,13 @@ class AnalizadorLexicoJson:
                                     str(self.columna) + ", lexema: " + cadena + "\n")
                     Errores.error.append(
                         {"tipo": "lexico", "lexema": cadena, "linea": self.linea, "columna": self.columna})
+                    self.entrada = self.entrada[:indice] + \
+                        "'" + self.entrada[indice:]
+                    cadena = ""
                     self.estado = 0
-                    indice -= 1
+                    #indice -= 1
                 elif (ord(self.entrada[indice]) == 39):
-                    self.estado = 0  # Se reconoce cadena con doble comilla
+                    self.estado = 0  # Se reconoce cadena con comilla simple
                     cadena = ""
                     self.agregarExpresion("Caracter", "'[^\n\r]*'")
                     #self.insertText("Se reconoce token string\n")
@@ -312,8 +321,10 @@ class AnalizadorLexicoJson:
                                     str(self.columna) + ", lexema: " + cadena + "\n")
                     Errores.error.append(
                         {"tipo": "lexico", "lexema": cadena, "linea": self.linea, "columna": self.columna})
+                    self.entrada = self.entrada[:indice] + \
+                        "&" + self.entrada[indice:]
                     self.estado = 0
-                    indice -= 1
+                    #indice -= 1
                 cadena = ""
             elif (self.estado == 18):
                 if (ord(self.entrada[indice]) == 124):
@@ -326,20 +337,27 @@ class AnalizadorLexicoJson:
                                     str(self.columna) + ", lexema: " + cadena + "\n")
                     Errores.error.append(
                         {"tipo": "lexico", "lexema": cadena, "linea": self.linea, "columna": self.columna})
+                    self.entrada = self.entrada[:indice] + \
+                        "|" + self.entrada[indice:]
                     self.estado = 0
-                    indice -= 1
+                    #indice -= 1
                 cadena = ""
         if (len(Errores.error) > 0):
-            self.insertText(
-                "Error: El analisis finalizo con uno o varios errores\n")
-            self.ids.clear()
             # Generar reporte de errores
             self.repError()
+            self.ids.clear()
+            self.insertText(
+                "Error: El analisis finalizo con uno o varios errores\n")
             return False
         else:
-            # Generar mi automata
+            # Generar automata
             self.grafo()
+            self.generarDirectorio()
             return True
+    # END
+
+    def getEntrada(self):
+        return self.entrada
     # END
 
     def insertText(self, texto):
@@ -427,8 +445,8 @@ class AnalizadorLexicoJson:
                 dot.edge("S" + str(nodo + 1), "S" + str(nodo + 1), label=".")
                 dot.edge("S" + str(nodo + 1), "S" + str(nodo + 2), label="'")
 
-        dot.render('/home/daniel/Desktop/ReporteJson', view=False)
-        print("Grafo de Estados Generado")
+        dot.render('/home/daniel/Desktop/Reportes/ReporteJson', view=False)
+        print("Grafo Generado")
     # END
 
     def repError(self):
@@ -473,6 +491,23 @@ class AnalizadorLexicoJson:
                                 <script src="https://unpkg.com/bootstrap-table@1.17.1/dist/bootstrap-table.min.js"></script>
                             </body>
                         </html>'''
-        file = open("/home/daniel/Desktop/errores.html", "w+")
+        file = open("/home/daniel/Desktop/Reportes/errores.html", "w+")
         file.write(cadena)
         file.close()
+    # END
+
+    def generarDirectorio(self):
+        ruta = ""
+        linea = self.entrada.split("\n")
+        for line in linea:
+            if (len(line.split("PATHL:")) > 1):
+                ruta = "/home/daniel/Desktop/output" + line.split("output")[1]
+                break
+
+        if (ruta != ""):
+            os.makedirs(ruta, exist_ok=True)
+            ruta += "/" + self.nombre
+            file = open(ruta, "w+")
+            file.write(self.entrada)
+            file.close()
+    # END

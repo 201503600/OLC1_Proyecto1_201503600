@@ -259,8 +259,10 @@ class Ui_Ventana(object):
         if(self.ruta.find('.js') != -1):
             # Analisis json
             analisis = AnalizadorLexicoJson(
-                self.editor.toPlainText(), self.consola)
+                self.editor.toPlainText(), self.consola, self.ruta.split("/")[len(self.ruta.split("/"))-1])
             bandera = analisis.analizarJson()
+            if (not bandera):
+                self.editor.setPlainText(analisis.getEntrada())
             pass
         elif(self.ruta.find('.css') != -1):
             # Analisis css
@@ -277,7 +279,8 @@ class Ui_Ventana(object):
     # END
 
     def ReporteJson(self):
-        webbrowser.open_new_tab("/home/daniel/Desktop/ReporteJson.pdf")
+        webbrowser.open_new_tab(
+            "/home/daniel/Desktop/Reportes/ReporteJson.pdf")
     # END
 
     def ReporteCSS(self):
@@ -293,7 +296,7 @@ class Ui_Ventana(object):
     # END
 
     def ReporteError(self):
-        webbrowser.open_new_tab("/home/daniel/Desktop/errores.html")
+        webbrowser.open_new_tab("/home/daniel/Desktop/Reportes/errores.html")
     # END
 
     def Informacion(self):

@@ -7,12 +7,14 @@ from Numeros import Numeros
 
 from LexicoJson import AnalizadorLexicoJson
 from LexicoCss import AnalizadorLexicoCss
+from LexicoHtml import AnalizadorLexicoHtml
 
 
 class Ui_Ventana(object):
     def setupUi(self, Ventana):
         self.ruta = ""
 
+        Ventana.setWindowTitle("ML Web Editor")
         Ventana.setObjectName("Ventana")
         Ventana.resize(850, 600)
 
@@ -135,8 +137,8 @@ class Ui_Ventana(object):
 
         self.mReporte = QtWidgets.QMenu("&Reporte", self.menubar)
         self.mReporte.addAction(self.itemRepJs)
-        self.mReporte.addAction(self.itemRepCSS)
-        self.mReporte.addAction(self.itemRepHtml)
+        # self.mReporte.addAction(self.itemRepCSS)
+        # self.mReporte.addAction(self.itemRepHtml)
         self.mReporte.addAction(self.itemRepSintactico)
         self.mReporte.addSeparator()
         self.mReporte.addAction(self.itemRepError)
@@ -235,21 +237,25 @@ class Ui_Ventana(object):
                     self.itemRepHtml.setEnabled(False)
                     self.itemRepSintactico.setEnabled(False)
                     self.itemRepJs.setEnabled(True)
+                    self.itemRepError.setEnabled(True)
                 elif (self.ruta.find(".css") != -1):
                     self.itemRepCSS.setEnabled(True)
                     self.itemRepHtml.setEnabled(False)
                     self.itemRepSintactico.setEnabled(False)
                     self.itemRepJs.setEnabled(False)
+                    self.itemRepError.setEnabled(True)
                 elif (self.ruta.find(".html") != -1):
                     self.itemRepCSS.setEnabled(False)
                     self.itemRepHtml.setEnabled(True)
                     self.itemRepSintactico.setEnabled(False)
                     self.itemRepJs.setEnabled(False)
+                    self.itemRepError.setEnabled(True)
                 elif (self.ruta.find(".rmt") != -1):
                     self.itemRepCSS.setEnabled(False)
                     self.itemRepHtml.setEnabled(False)
                     self.itemRepSintactico.setEnabled(True)
                     self.itemRepJs.setEnabled(False)
+                    self.itemRepError.setEnabled(False)
     # END
 
     def Salir(self):
@@ -274,6 +280,11 @@ class Ui_Ventana(object):
                 self.editor.setPlainText(analisis.getEntrada())
         elif(self.ruta.find('.html') != -1):
             # Analisis html
+            analisis = AnalizadorLexicoHtml(self.editor.toPlainText(
+            ), self.consola, self.ruta.split("/")[len(self.ruta.split("/")) - 1])
+            bandera = analisis.analizarHtml()
+            if (not bandera):
+                self.editor.setPlainText(analisis.getEntrada())
             pass
         elif(self.ruta.find('.rmt') != -1):
             # Analisis sintactico

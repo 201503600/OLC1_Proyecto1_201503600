@@ -303,7 +303,7 @@ class AnalizadorLexicoCss:
             </head>
             <body>
                 <div>
-                    <h1>Reporte de errores léxicos</h1>
+                    <h1>Reporte de errores léxicos CSS</h1>
                     <table class="table">
                     <thead>
                         <tr>

@@ -464,7 +464,7 @@ class AnalizadorLexicoJson:
             </head>
             <body>
                 <div>
-                    <h1>Reporte de errores léxicos</h1>
+                    <h1>Reporte de errores léxicos JavaScript</h1>
                     <table class="table">
                     <thead>
                         <tr>

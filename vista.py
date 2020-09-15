@@ -6,6 +6,7 @@ from ResaltarSintaxis import ResaltarSintaxis
 from Numeros import Numeros
 
 from LexicoJson import AnalizadorLexicoJson
+from LexicoCss import AnalizadorLexicoCss
 
 
 class Ui_Ventana(object):
@@ -266,7 +267,11 @@ class Ui_Ventana(object):
             pass
         elif(self.ruta.find('.css') != -1):
             # Analisis css
-            pass
+            analisis = AnalizadorLexicoCss(self.editor.toPlainText(
+            ), self.consola, self.ruta.split("/")[len(self.ruta.split("/")) - 1])
+            bandera = analisis.analizarCss()
+            if (not bandera):
+                self.editor.setPlainText(analisis.getEntrada())
         elif(self.ruta.find('.html') != -1):
             # Analisis html
             pass

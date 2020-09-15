@@ -23,10 +23,10 @@ class AnalizadorLexicoJson:
         Errores.error.clear()
         if (len(self.entrada) > 0):
             self.insertText(
-                "*************************\n\tCOMENZANDO EL ANALISIS\n*************************\n")
+                "*************************************\n\tCOMENZANDO EL ANALISIS\n*************************************\n")
             self.inicio()
             self.insertText(
-                "*************************\n\tFINALIZO EL ANALISIS\n*************************\n")
+                "*************************************\n\tFINALIZO EL ANALISIS\n*************************************\n")
         else:
             self.insertText("Error: No hay texto por analizar\n")
     # END

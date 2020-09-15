@@ -8,11 +8,14 @@ from Numeros import Numeros
 from LexicoJson import AnalizadorLexicoJson
 from LexicoCss import AnalizadorLexicoCss
 from LexicoHtml import AnalizadorLexicoHtml
+from LexicoAritmetica import AnalizadorLexicoAritmetica
+from SintacticoAritmetica import AnalizadorSintactico
 
 
 class Ui_Ventana(object):
     def setupUi(self, Ventana):
         self.ruta = ""
+        self.reporte = []
 
         Ventana.setWindowTitle("ML Web Editor")
         Ventana.setObjectName("Ventana")
@@ -285,10 +288,79 @@ class Ui_Ventana(object):
             bandera = analisis.analizarHtml()
             if (not bandera):
                 self.editor.setPlainText(analisis.getEntrada())
-            pass
         elif(self.ruta.find('.rmt') != -1):
             # Analisis sintactico
-            pass
+            self.consola.insertPlainText(
+                "\n\n***********************************\n  COMENZANDO ANALISIS SINTACTICO\n***********************************\n")
+
+            sintactico = AnalizadorSintactico(self.consola)
+            self.reporte.clear()
+            linea = 1
+            for line in self.editor.toPlainText().split("\n"):
+                if (len(line) > 0):
+                    resultado = sintactico.parser(line)
+                    if (resultado == True):
+                        self.reporte.append(
+                            {"Numero": linea, "Linea": linea, "Expresion": line, "Resultado": "Incorrecto"})
+                    else:
+                        self.reporte.append(
+                            {"Numero": linea, "Linea": linea, "Expresion": line, "Resultado": "Correcto"})
+                linea += 1
+
+            self.consola.insertPlainText(
+                "***********************************\n  FINALIZO ANALISIS SINTACTICO\n***********************************\n")
+
+            # Generacion de reporte
+            cadena = '''<!doctype html>
+        <html>
+            <head>
+                <!-- Required meta tags -->
+                <meta charset="utf-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+                <title>Reporte de Error</title>
+
+                <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+                <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+                <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.17.1/dist/bootstrap-table.min.css">
+            </head>
+            <body>
+                <div>
+                    <h1>Reporte de Analisis Sintactico</h1>
+                    <table class="table">
+                    <thead>
+                        <tr>
+                        <th scope="col">No</th>
+                        <th scope="col">Linea</th>
+                        <th scope="col">Expresion</th>
+                        <th scope="col">Resultado</th>
+                        </tr>
+                    </thead>
+                    <tbody>'''
+
+            contador = 1
+            for e in self.reporte:
+                cadena += '<tr><th scope="row">' + str(e["Numero"]) + \
+                    '</th><td>' + str(e["Linea"]) + '</td><td>' + \
+                    str(e["Expresion"]) + '</td><td>' + \
+                    e["Resultado"] + '</td></tr>'
+                contador += 1
+
+            cadena += '''</tbody>
+                            </table>
+                        </div><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+                                    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+                                    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+                                    <script src="https://unpkg.com/bootstrap-table@1.17.1/dist/bootstrap-table.min.js"></script>
+                                </body>
+                            </html>'''
+            file = open(
+                "/home/daniel/Desktop/Reportes/ReporteAritmetica.html", "w+")
+            file.write(cadena)
+            file.close()
+
+            # lexico = AnalizadorLexicoAritmetica(
+            #    self.editor.toPlainText(), self.consola)
+            # print(lexico.scanner())
         else:
             self.consola.insertPlainText(
                 "Error: Debe abrir o guardar el archivo para analizar\n")
@@ -308,7 +380,8 @@ class Ui_Ventana(object):
     # END
 
     def ReporteSintactico(self):
-        pass
+        webbrowser.open_new_tab(
+            "/home/daniel/Desktop/Reportes/ReporteAritmetica.html")
     # END
 
     def ReporteError(self):

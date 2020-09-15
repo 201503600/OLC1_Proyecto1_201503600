@@ -11,8 +11,6 @@ class AnalizadorLexicoHtml:
         self.columna = 0
         self.consola = conso
         self.nombre = name
-        self.ids = ["color", "background-color", "background-image", "border", "opacity", "background", "text-align", "font-family", "font-style", "font-weight", "font-size", "font", "padding-left", "padding-right", "padding-bottom", "padding-top", "padding", "display",
-                    "line-height", "width", "height", "margin-top", "margin-right", "margin-bottom", "margin-left", "margin", "border-style", "display", "position", "bottom", "top", "right", "left", "float", "clear", "max-width", "min-width", "max-height", "min-height"]
     # END
 
     def analizarHtml(self):

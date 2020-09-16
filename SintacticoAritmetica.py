@@ -64,7 +64,10 @@ class AnalizadorSintactico:
             self.match("para")
             self.E()
             self.match("parc")
+        elif (self.preAnalisis["tipo"] == "numero"):
+            self.match("numero")
         else:
+            self.match("menos")
             self.match("numero")
     # END
 

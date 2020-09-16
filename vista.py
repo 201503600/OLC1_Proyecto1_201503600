@@ -1,4 +1,5 @@
 import sys
+import os
 import webbrowser
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import Qt
@@ -181,6 +182,7 @@ class Ui_Ventana(object):
         self.itemRepError.triggered.connect(self.ReporteError)
 
         self.itemInfor.triggered.connect(self.Informacion)
+        self.itemManuales.triggered.connect(self.Manual)
     # END
 
     def NuevoArchivo(self):
@@ -242,14 +244,14 @@ class Ui_Ventana(object):
                     self.itemRepJs.setEnabled(True)
                     self.itemRepError.setEnabled(True)
                 elif (self.ruta.find(".css") != -1):
-                    self.itemRepCSS.setEnabled(True)
+                    self.itemRepCSS.setEnabled(False)
                     self.itemRepHtml.setEnabled(False)
                     self.itemRepSintactico.setEnabled(False)
                     self.itemRepJs.setEnabled(False)
                     self.itemRepError.setEnabled(True)
                 elif (self.ruta.find(".html") != -1):
                     self.itemRepCSS.setEnabled(False)
-                    self.itemRepHtml.setEnabled(True)
+                    self.itemRepHtml.setEnabled(False)
                     self.itemRepSintactico.setEnabled(False)
                     self.itemRepJs.setEnabled(False)
                     self.itemRepError.setEnabled(True)
@@ -325,7 +327,7 @@ class Ui_Ventana(object):
             </head>
             <body>
                 <div>
-                    <h1>Reporte de Analisis Sintactico</h1>
+                    <h1 style="text-align:center">Reporte de Analisis Sintactico</h1>
                     <table class="table">
                     <thead>
                         <tr>
@@ -400,6 +402,10 @@ class Ui_Ventana(object):
         #msg.setDetailedText("The details are as follows:")
 
         msg.exec()
+    # END
+
+    def Manual(self):
+        webbrowser.open_new_tab(os.getcwd() + "/Manual Usuario.pdf")
     # END
 
 

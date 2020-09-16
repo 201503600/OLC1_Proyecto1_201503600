@@ -242,6 +242,13 @@ class AnalizadorLexicoCss:
                     self.estado = 6
                     self.insertText("S9 -> S6: caracter " +
                                     self.entrada[indice] + "\n")
+                elif ((ord(self.entrada[indice]) >= 97 and ord(self.entrada[indice]) <= 122) or (ord(self.entrada[indice]) >= 65 and ord(self.entrada[indice]) <= 90)):
+                    cadena = "-"
+                    cadena += self.entrada[indice]
+                    self.columna += 1
+                    self.estado = 5
+                    self.insertText("S9 -> S5: caracter " +
+                                    self.entrada[indice] + "\n")
                 else:
                     self.insertText("S9 -> S0: Error lexico en la linea: " + str(
                         self.linea) + ", columna: " + str(self.columna) + ", lexema: -\n")
@@ -303,7 +310,7 @@ class AnalizadorLexicoCss:
             </head>
             <body>
                 <div>
-                    <h1>Reporte de errores léxicos CSS</h1>
+                    <h1 style="text-align:center">Reporte de errores léxicos CSS</h1>
                     <table class="table">
                     <thead>
                         <tr>

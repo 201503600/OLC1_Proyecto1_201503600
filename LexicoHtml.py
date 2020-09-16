@@ -203,7 +203,7 @@ class AnalizadorLexicoHtml:
             </head>
             <body>
                 <div>
-                    <h1>Reporte de errores léxicos Html</h1>
+                    <h1 style="text-align:center">Reporte de errores léxicos Html</h1>
                     <table class="table">
                     <thead>
                         <tr>

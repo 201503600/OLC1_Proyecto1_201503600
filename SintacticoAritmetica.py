@@ -68,7 +68,7 @@ class AnalizadorSintactico:
             self.match("numero")
         else:
             self.match("menos")
-            self.match("numero")
+            self.E()
     # END
 
     def match(self, tipo):

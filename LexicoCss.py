@@ -76,7 +76,7 @@ class AnalizadorLexicoCss:
                     self.columna += 1  # Se reconoce token ;
                     self.insertText(
                         "S0 -> S0: Se reconocio token PUNTO_COMA\n")
-                elif (ord(self.entrada[indice]) == 40):
+                elif (ord(self.entrada[indice]) == 35):
                     self.columna += 1  # Se reconoce token #
                     self.insertText("S0 -> S0: Se reconocio token NUMERAL\n")
                 elif (ord(self.entrada[indice]) == 37):
